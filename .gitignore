@@ -1,0 +1,25 @@
+# build output
+dist/
+.output/
+.vercel/
+.astro/
+
+# deps
+node_modules/
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+
+# os / editors
+.DS_Store
+.vscode/
+.idea/
+
+# misc
+*.tsbuildinfo

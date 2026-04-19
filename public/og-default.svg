@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="g1" cx="70%" cy="25%" r="70%">
+      <stop offset="0%" stop-color="#b87333" stop-opacity="0.35"/>
+      <stop offset="60%" stop-color="#0f0c09" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="g2" cx="10%" cy="95%" r="80%">
+      <stop offset="0%" stop-color="#8a4a1f" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#0f0c09" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0f0c09"/>
+  <rect width="1200" height="630" fill="url(#g1)"/>
+  <rect width="1200" height="630" fill="url(#g2)"/>
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="rgba(245,241,234,0.15)" stroke-width="1"/>
+  <text x="80" y="100" font-family="'JetBrains Mono', monospace" font-size="16" letter-spacing="6" fill="#b87333">VOL. 01 · ISSUE 00 — PRE-LAUNCH DISPATCH</text>
+  <circle cx="1080" cy="100" r="40" fill="none" stroke="#b87333" stroke-width="1" stroke-dasharray="2 3"/>
+  <text x="1080" y="112" font-family="Georgia, serif" font-size="42" fill="#b87333" text-anchor="middle">M</text>
+  <text x="80" y="320" font-family="Georgia, serif" font-size="84" fill="#f5f1ea">Coffee at the Intersection</text>
+  <text x="80" y="410" font-family="Georgia, serif" font-size="84" fill="#f5f1ea">of <tspan font-style="italic" fill="#d49464">Origin</tspan> and <tspan font-style="italic" fill="#d49464">Craft</tspan>.</text>
+  <line x1="80" y1="500" x2="1120" y2="500" stroke="rgba(245,241,234,0.15)" stroke-width="1"/>
+  <text x="80" y="545" font-family="Georgia, serif" font-size="28" fill="#f5f1ea">Meridian — Specialty Coffee</text>
+  <text x="80" y="578" font-family="'JetBrains Mono', monospace" font-size="14" letter-spacing="4" fill="#a89f92">JOIN THE WAITLIST · LAUNCHING SOON · ROASTED IN BRISTOL</text>
+</svg>

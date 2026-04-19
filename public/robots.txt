@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /thanks
+Sitemap: https://meridian-491a.vercel.app/sitemap-index.xml
