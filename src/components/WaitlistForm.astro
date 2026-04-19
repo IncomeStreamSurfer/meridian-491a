@@ -1,0 +1,131 @@
+---
+interface Props {
+  theme?: 'light' | 'dark';
+  compact?: boolean;
+  source?: string;
+}
+const { theme = 'light', compact = false, source = 'home_hero' } = Astro.props;
+const isDark = theme === 'dark';
+---
+<form
+  class="waitlist-form group relative w-full"
+  data-waitlist
+  data-source={source}
+  novalidate
+>
+  <div
+    class:list={[
+      'relative flex w-full flex-col gap-3 sm:flex-row sm:items-stretch',
+      compact ? '' : 'sm:gap-0',
+    ]}
+  >
+    <label class="sr-only" for={`email-${source}`}>Email address</label>
+    <input
+      id={`email-${source}`}
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      placeholder="you@inbox.com"
+      class:list={[
+        'peer h-14 w-full min-w-0 bg-transparent px-5 text-[15px] font-sans outline-none transition-colors',
+        'border border-current/25 focus:border-current/70',
+        'placeholder:opacity-40',
+        compact ? 'rounded-full' : 'sm:rounded-l-full sm:rounded-r-none rounded-full',
+      ]}
+    />
+    <button
+      type="submit"
+      class:list={[
+        'inline-flex h-14 shrink-0 items-center justify-center gap-2 px-7 text-[11px] font-mono uppercase tracking-[0.28em] transition-all',
+        'disabled:cursor-not-allowed disabled:opacity-50',
+        compact ? 'rounded-full' : 'sm:rounded-r-full sm:rounded-l-none rounded-full',
+        isDark
+          ? 'bg-[color:var(--color-bone)] text-[color:var(--color-ink)] hover:bg-[color:var(--color-copper-soft)] hover:text-[color:var(--color-ink)]'
+          : 'bg-[color:var(--color-ink)] text-[color:var(--color-bone)] hover:bg-[color:var(--color-espresso)]',
+      ]}
+      data-submit
+    >
+      <span data-label>Join Waitlist</span>
+      <span data-arrow aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <p class="mt-3 text-[12px] font-sans opacity-55">
+    No spam — just one thoughtful note before launch, and one at launch.
+  </p>
+
+  <p
+    class="mt-3 hidden rounded-xl border border-current/15 px-4 py-3 text-[13px] font-sans"
+    data-error
+    role="alert"
+  ></p>
+
+  <div class="waitlist-success hidden">
+    <div class="mt-5 flex items-start gap-3 rounded-xl border border-current/15 bg-current/5 px-5 py-4">
+      <span class="mt-1 inline-block h-2.5 w-2.5 flex-shrink-0 rounded-full" style="background:var(--color-copper);"></span>
+      <div>
+        <p class="font-display text-[18px] leading-snug">You're on the list.</p>
+        <p class="mt-1 text-[13px] opacity-70">
+          Redirecting you to a proper welcome…
+        </p>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  function wireForm(form: HTMLFormElement) {
+    const submit = form.querySelector('[data-submit]') as HTMLButtonElement;
+    const label = form.querySelector('[data-label]') as HTMLSpanElement;
+    const arrow = form.querySelector('[data-arrow]') as HTMLSpanElement;
+    const errorEl = form.querySelector('[data-error]') as HTMLElement;
+    const success = form.querySelector('.waitlist-success') as HTMLElement;
+    const source = form.dataset.source || 'unknown';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.classList.add('hidden');
+      errorEl.textContent = '';
+
+      const data = new FormData(form);
+      const email = String(data.get('email') || '').trim();
+      if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+        errorEl.textContent = 'That email doesn’t look right. Try again?';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+
+      submit.disabled = true;
+      const prev = label.textContent;
+      label.textContent = 'Sending';
+      arrow.textContent = '…';
+
+      try {
+        const res = await fetch('/api/waitlist', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source }),
+        });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok || out.ok === false) {
+          throw new Error(out.error || 'Something went wrong.');
+        }
+        success.classList.remove('hidden');
+        label.textContent = 'Welcome';
+        arrow.textContent = '✓';
+        setTimeout(() => {
+          window.location.href = '/thanks';
+        }, 650);
+      } catch (err: any) {
+        errorEl.textContent = err?.message || 'We could not save your email. Try again in a moment.';
+        errorEl.classList.remove('hidden');
+        submit.disabled = false;
+        label.textContent = prev || 'Join Waitlist';
+        arrow.textContent = '→';
+      }
+    });
+  }
+
+  document.querySelectorAll<HTMLFormElement>('form[data-waitlist]').forEach(wireForm);
+</script>
